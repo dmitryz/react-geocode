@@ -1,5 +1,5 @@
 {
-  "name": "react-geocode-newt d3",
+  "name": "react-geocode-new",
   "version": "0.1.2",
   "description":
     "A React module to transform a description of a location (i.e. street address, town name, etc.) into geographic coordinates (i.e. latitude and longitude) and vice versa.",
