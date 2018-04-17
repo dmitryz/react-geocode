@@ -52,7 +52,27 @@ var handleUrl = function () {
   };
 }();
 
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+function _asyncToGenerator(fn) {
+  return function () {
+    var gen = fn.apply(this, arguments);return new Promise(function (resolve, reject) {
+      function step(key, arg) {
+        try {
+          var info = gen[key](arg);var value = info.value;
+        } catch (error) {
+          reject(error);return;
+        }if (info.done) {
+          resolve(value);
+        } else {
+          return Promise.resolve(value).then(function (value) {
+            step("next", value);
+          }, function (err) {
+            step("throw", err);
+          });
+        }
+      }return step("next");
+    });
+  };
+}
 
 /**
  * React Geocode Module
@@ -87,7 +107,6 @@ exports.default = {
     API_KEY = apiKey;
   },
 
-
   /**
    *
    *
@@ -98,7 +117,6 @@ exports.default = {
 
     DEBUG = flag;
   },
-
 
   /**
    *
@@ -129,7 +147,6 @@ exports.default = {
               latLng = lat + "," + lng;
               url = GOOGLE_API + "?latlng=" + encodeURI(latLng);
 
-
               if (apiKey || API_KEY) {
                 API_KEY = apiKey || API_KEY;
                 url += "&key=" + API_KEY;
@@ -145,7 +162,6 @@ exports.default = {
       }, _callee2, _this);
     }))();
   },
-
 
   /**
    *
@@ -173,7 +189,6 @@ exports.default = {
 
             case 3:
               url = GOOGLE_API + "?address=" + encodeURI(address);
-
 
               if (apiKey || API_KEY) {
                 API_KEY = apiKey || API_KEY;
