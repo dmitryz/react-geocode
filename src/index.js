@@ -1,3 +1,59 @@
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var handleUrl = function () {
+  var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(url) {
+    var response, json;
+    return regeneratorRuntime.wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            _context.next = 2;
+            return fetch(url).catch(function (error) {
+              return Promise.reject(new Error("Error fetching data"));
+            });
+
+          case 2:
+            response = _context.sent;
+            _context.next = 5;
+            return response.json().catch(function () {
+              log("Error parsing server response");
+              return Promise.reject(new Error("Error parsing server response"));
+            });
+
+          case 5:
+            json = _context.sent;
+
+            if (!(json.status === "OK")) {
+              _context.next = 9;
+              break;
+            }
+
+            log(json);
+            return _context.abrupt("return", json);
+
+          case 9:
+            log("Server returned status code " + json.status, true);
+            return _context.abrupt("return", Promise.reject(new Error("Server returned status code " + json.status)));
+
+          case 11:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee, this);
+  }));
+
+  return function handleUrl(_x2) {
+    return _ref.apply(this, arguments);
+  };
+}();
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
 /**
  * React Geocode Module
  *
@@ -5,11 +61,13 @@
  * @author  Pir Shukarulalh Shah <shuker_rashdi@hotmail.com> (http://www.shukarullah.com)
  */
 
-let DEBUG = false;
-let API_KEY = null;
-const GOOGLE_API = "https://maps.google.com/maps/api/geocode/json";
+var DEBUG = false;
+var API_KEY = null;
+var GOOGLE_API = "https://maps.google.com/maps/api/geocode/json";
 
-function log(message, warn = false) {
+function log(message) {
+  var warn = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+
   if (DEBUG) {
     if (warn) {
       console.warn(message);
@@ -19,44 +77,28 @@ function log(message, warn = false) {
   }
 }
 
-async function handleUrl(url) {
-  const response = await fetch(url).catch(error =>
-    Promise.reject(new Error("Error fetching data"))
-  );
-
-  const json = await response.json().catch(() => {
-    log("Error parsing server response");
-    return Promise.reject(new Error("Error parsing server response"));
-  });
-
-  if (json.status === "OK") {
-    log(json);
-    return json;
-  }
-  log(`Server returned status code ${json.status}`, true);
-  return Promise.reject(
-    new Error(`Server returned status code ${json.status}`)
-  );
-}
-
-export default {
+exports.default = {
   /**
    *
    *
    * @param {string} apiKey
    */
-  setApiKey(apiKey) {
+  setApiKey: function setApiKey(apiKey) {
     API_KEY = apiKey;
   },
+
 
   /**
    *
    *
    * @param {boolean} [flag=true]
    */
-  enableDebug(flag = true) {
+  enableDebug: function enableDebug() {
+    var flag = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
+
     DEBUG = flag;
   },
+
 
   /**
    *
@@ -66,22 +108,44 @@ export default {
    * @param {string} [apiKey]
    * @returns {Promise}
    */
-  async fromLatLng(lat, lng, apiKey) {
-    if (!lat || !lng) {
-      log("Provided coordinates are invalid", true);
-      return Promise.reject(new Error("Provided coordinates are invalid"));
-    }
+  fromLatLng: function fromLatLng(lat, lng, apiKey) {
+    var _this = this;
 
-    const latLng = `${lat},${lng}`;
-    let url = `${GOOGLE_API}?latlng=${encodeURI(latLng)}`;
+    return _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
+      var latLng, url;
+      return regeneratorRuntime.wrap(function _callee2$(_context2) {
+        while (1) {
+          switch (_context2.prev = _context2.next) {
+            case 0:
+              if (!(!lat || !lng)) {
+                _context2.next = 3;
+                break;
+              }
 
-    if (apiKey || API_KEY) {
-      API_KEY = apiKey || API_KEY;
-      url += `&key=${API_KEY}`;
-    }
+              log("Provided coordinates are invalid", true);
+              return _context2.abrupt("return", Promise.reject(new Error("Provided coordinates are invalid")));
 
-    return handleUrl(url);
+            case 3:
+              latLng = lat + "," + lng;
+              url = GOOGLE_API + "?latlng=" + encodeURI(latLng);
+
+
+              if (apiKey || API_KEY) {
+                API_KEY = apiKey || API_KEY;
+                url += "&key=" + API_KEY;
+              }
+
+              return _context2.abrupt("return", handleUrl(url));
+
+            case 7:
+            case "end":
+              return _context2.stop();
+          }
+        }
+      }, _callee2, _this);
+    }))();
   },
+
 
   /**
    *
@@ -90,19 +154,40 @@ export default {
    * @param {string} [apiKey]
    * @returns {Promise}
    */
-  async fromAddress(address, apiKey) {
-    if (!address) {
-      log("Provided address is invalid", true);
-      return Promise.reject(new Error("Provided address is invalid"));
-    }
+  fromAddress: function fromAddress(address, apiKey) {
+    var _this2 = this;
 
-    let url = `${GOOGLE_API}?address=${encodeURI(address)}`;
+    return _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3() {
+      var url;
+      return regeneratorRuntime.wrap(function _callee3$(_context3) {
+        while (1) {
+          switch (_context3.prev = _context3.next) {
+            case 0:
+              if (address) {
+                _context3.next = 3;
+                break;
+              }
 
-    if (apiKey || API_KEY) {
-      API_KEY = apiKey || API_KEY;
-      url += `&key=${API_KEY}`;
-    }
+              log("Provided address is invalid", true);
+              return _context3.abrupt("return", Promise.reject(new Error("Provided address is invalid")));
 
-    return handleUrl(url);
+            case 3:
+              url = GOOGLE_API + "?address=" + encodeURI(address);
+
+
+              if (apiKey || API_KEY) {
+                API_KEY = apiKey || API_KEY;
+                url += "&key=" + API_KEY;
+              }
+
+              return _context3.abrupt("return", handleUrl(url));
+
+            case 6:
+            case "end":
+              return _context3.stop();
+          }
+        }
+      }, _callee3, _this2);
+    }))();
   }
 };
